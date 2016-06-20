@@ -48,8 +48,8 @@ class Module
         $em       = $app->getEventManager();
 
         $em->attach(MvcEvent::EVENT_ROUTE, $services->get(ContentTypeListener::class), -625);
-        $em->attachAggregate($services->get(AcceptFilterListener::class));
-        $em->attachAggregate($services->get(ContentTypeFilterListener::class));
+        $services->get(AcceptFilterListener::class)->attach($em);
+        $services->get(ContentTypeFilterListener::class)->attach($em);
 
         $sem = $em->getSharedManager();
         $sem->attach(

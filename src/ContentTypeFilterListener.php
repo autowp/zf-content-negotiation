@@ -25,7 +25,7 @@ class ContentTypeFilterListener extends AbstractListenerAggregate
     /**
      * @param  EventManagerInterface $events
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_ROUTE, [$this, 'onRoute'], -625);
     }

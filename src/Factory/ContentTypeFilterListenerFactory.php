@@ -9,21 +9,27 @@ namespace ZF\ContentNegotiation\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZF\ContentNegotiation\ContentTypeFilterListener;
+use Interop\Container\ContainerInterface;
 
 class ContentTypeFilterListenerFactory implements FactoryInterface
 {
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        $listener = new ContentTypeFilterListener();
+
+        /* @var $options \ZF\ContentNegotiation\ContentNegotiationOptions */
+        $options = $container->get('ZF\ContentNegotiation\ContentNegotiationOptions');
+
+        $listener->setConfig($options->getContentTypeWhitelist());
+
+        return $listener;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $listener = new ContentTypeFilterListener();
-
-        /* @var $options \ZF\ContentNegotiation\ContentNegotiationOptions */
-        $options = $serviceLocator->get('ZF\ContentNegotiation\ContentNegotiationOptions');
-
-        $listener->setConfig($options->getContentTypeWhitelist());
-
-        return $listener;
+        return $this($serviceLocator, ContentTypeFilterListenerFactory::class);
     }
 }

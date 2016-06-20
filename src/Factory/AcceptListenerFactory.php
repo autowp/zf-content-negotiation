@@ -10,20 +10,18 @@ use Zend\Mvc\Controller\Plugin\AcceptableViewModelSelector;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZF\ContentNegotiation\AcceptListener;
+use Interop\Container\ContainerInterface;
 
 class AcceptListenerFactory implements FactoryInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /* @var $options \ZF\ContentNegotiation\ContentNegotiationOptions */
-        $options = $serviceLocator->get('ZF\ContentNegotiation\ContentNegotiationOptions');
+        $options = $container->get('ZF\ContentNegotiation\ContentNegotiationOptions');
 
         $selector = null;
-        if ($serviceLocator->has('ControllerPluginManager')) {
-            $plugins = $serviceLocator->get('ControllerPluginManager');
+        if ($container->has('ControllerPluginManager')) {
+            $plugins = $container->get('ControllerPluginManager');
             if ($plugins->has('AcceptableViewModelSelector')) {
                 $selector = $plugins->get('AcceptableViewModelSelector');
             }
@@ -34,5 +32,13 @@ class AcceptListenerFactory implements FactoryInterface
         }
 
         return new AcceptListener($selector, $options->toArray());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, AcceptListenerFactory::class);
     }
 }

@@ -9,21 +9,27 @@ namespace ZF\ContentNegotiation\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZF\ContentNegotiation\AcceptFilterListener;
+use Interop\Container\ContainerInterface;
 
 class AcceptFilterListenerFactory implements FactoryInterface
 {
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        $listener = new AcceptFilterListener();
+
+        /* @var $options \ZF\ContentNegotiation\ContentNegotiationOptions */
+        $options = $container->get('ZF\ContentNegotiation\ContentNegotiationOptions');
+
+        $listener->setConfig($options->getAcceptWhitelist());
+
+        return $listener;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $listener = new AcceptFilterListener();
-
-        /* @var $options \ZF\ContentNegotiation\ContentNegotiationOptions */
-        $options = $serviceLocator->get('ZF\ContentNegotiation\ContentNegotiationOptions');
-
-        $listener->setConfig($options->getAcceptWhitelist());
-
-        return $listener;
+        return $this($serviceLocator, AcceptFilterListenerFactory::class);
     }
 }

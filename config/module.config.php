@@ -25,7 +25,7 @@ return [
 
     'validators' => [
         'aliases'   => [
-            'Zend\Validator\File\UploadFile' => 'fileuploadfile',
+            //'Zend\Validator\File\UploadFile' => 'fileuploadfile',
         ],
         'factories' => [
             'fileuploadfile' => Factory\UploadFileValidatorFactory::class,
