@@ -1,5 +1,5 @@
 {
-    "name": "autowp/zf-content-negotiation",
+    "name": "zfcampus/zf-content-negotiation",
     "description": "ZF2 Module providing content-negotiation features",
     "type": "library",
     "license": "BSD-3-Clause",
@@ -36,7 +36,7 @@
         "zendframework/zend-stdlib": "^2.3",
         "zendframework/zend-validator": "^2.3",
         "zendframework/zend-view": "^2.3",
-        "autowp/zf-api-problem": "^1.0"
+        "zfcampus/zf-api-problem": "^1.0"
     },
     "require-dev": {
         "phpunit/PHPUnit": "^4.8",
